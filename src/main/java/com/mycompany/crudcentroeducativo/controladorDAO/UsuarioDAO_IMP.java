@@ -44,7 +44,7 @@ public class UsuarioDAO_IMP
             
             return pstm.executeUpdate();
         }catch(Exception e){
-            System.out.println("ERROR: "+e.getMessage());
+            System.out.println("ERROR add us: "+e.getMessage());
         }
         return 0;
     }
@@ -66,7 +66,7 @@ public class UsuarioDAO_IMP
             }
             
         }catch(Exception e){
-            System.out.println("ERROR: "+e.getMessage());
+            System.out.println("ERROR byid us: "+e.getMessage());
         }
         
         return users;
@@ -91,7 +91,7 @@ public class UsuarioDAO_IMP
             }
 
         } catch (Exception e) {
-            System.out.println("ERROR: " + e.getMessage());
+            System.out.println("ERROR byall us: " + e.getMessage());
         }
 
         return allusers;
@@ -116,7 +116,7 @@ public class UsuarioDAO_IMP
             return pstm.executeUpdate();
             
         }catch(Exception e){
-            System.out.println("ERROR: "+e.getMessage());
+            System.out.println("ERROR updt us: "+e.getMessage());
         }
         return 0;
     }
@@ -133,7 +133,7 @@ public class UsuarioDAO_IMP
             
             pstm.executeUpdate();
         }catch(Exception e){
-            System.out.println("ERROR: "+e.getMessage());
+            System.out.println("ERROR delete us: "+e.getMessage());
         }
     }
 
@@ -152,7 +152,7 @@ public class UsuarioDAO_IMP
             }
             
         }catch(Exception e){
-            System.out.println("ERROR: "+e.getMessage());
+            System.out.println("ERROR valida us: "+e.getMessage());
         }
         
         return false;

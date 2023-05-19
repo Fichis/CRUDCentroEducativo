@@ -17,24 +17,24 @@ public class Alumno {
     private String apellido1;
     private String apellido2;
     private String dni;
-    private Date fechanacimiento;
+    private Date fNacimiento;
     private String telefono;
     private String email;
     private String direccion;
-    private String codpostal;
+    private String cp;
     private String provincia;
     private String poblacion;
 
-    public Alumno(String nombre, String apellido1, String apellido2, String dni, Date fechanacimiento, String telefono, String email, String direccion, String codpostal, String provincia, String poblacion) {
+    public Alumno(String nombre, String apellido1, String apellido2, String dni, Date fNacimiento, String telefono, String email, String direccion, String cp, String provincia, String poblacion) {
         this.nombre = nombre;
         this.apellido1 = apellido1;
         this.apellido2 = apellido2;
         this.dni = dni;
-        this.fechanacimiento = fechanacimiento;
+        this.fNacimiento = fNacimiento;
         this.telefono = telefono;
         this.email = email;
         this.direccion = direccion;
-        this.codpostal = codpostal;
+        this.cp = cp;
         this.provincia = provincia;
         this.poblacion = poblacion;
     }
@@ -84,11 +84,11 @@ public class Alumno {
     }
 
     public Date getFechanacimiento() {
-        return fechanacimiento;
+        return fNacimiento;
     }
 
-    public void setFechanacimiento(Date fechanac) {
-        this.fechanacimiento = fechanac;
+    public void setFechanacimiento(Date fNacimiento) {
+        this.fNacimiento = fNacimiento;
     }
 
     public String getTelefono() {
@@ -116,11 +116,11 @@ public class Alumno {
     }
 
     public String getCodpostal() {
-        return codpostal;
+        return cp;
     }
 
     public void setCodpostal(String codpostal) {
-        this.codpostal = codpostal;
+        this.cp = codpostal;
     }
 
     public String getProvincia() {
@@ -141,7 +141,7 @@ public class Alumno {
 
     @Override
     public String toString() {
-        return nombre + ", " + apellido1 + ", " + apellido2 + ", " + dni + ", " + fechanacimiento + ", " + telefono + ", " + email + ", " + direccion + ", " + codpostal + ", " + provincia + ", " + poblacion;
+        return nombre + ", " + apellido1 + ", " + apellido2 + ", " + dni + ", " + fNacimiento + ", " + telefono + ", " + email + ", " + direccion + ", " + cp + ", " + provincia + ", " + poblacion;
     }
 
     @Override

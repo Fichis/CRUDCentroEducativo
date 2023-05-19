@@ -33,7 +33,30 @@ public class AlumnoDAO_IMP
 
     @Override
     public int add(Alumno a) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String sql="""
+                   insert into alumno(dni, nombre, apellido1, apellido2, fNacimiento, telefono, email, direccion, cp, poblacion, provincia)
+                   values(?,?,?,?,?,?,?,?,?,?,?);
+                   """;
+        try(Connection cn=MyDataSource.getConnection();){
+                
+            PreparedStatement pstm=cn.prepareStatement(sql);
+            pstm.setString(1, a.getDni());
+            pstm.setString(2, a.getNombre());
+            pstm.setString(3, a.getApellido1());
+            pstm.setString(4, a.getApellido2());
+            pstm.setDate(5, a.getFechanacimiento());
+            pstm.setString(6, a.getTelefono());
+            pstm.setString(7, a.getEmail());
+            pstm.setString(8, a.getDireccion());
+            pstm.setString(9, a.getCodpostal());
+            pstm.setString(10, a.getPoblacion());
+            pstm.setString(11, a.getProvincia());
+            
+            return pstm.executeUpdate();
+        }catch(Exception e){
+            System.out.println("ERROR add al:"+e.getMessage());
+        }
+        return 0;
     }
 
     @Override
@@ -48,11 +71,11 @@ public class AlumnoDAO_IMP
             if(rs.next()){  //Creamos una instancia para pasar los datos por un id
                 alumn=new Alumno();
                 alumn.setId(rs.getInt("id"));
-                alumn.setNombre(rs.getString("nombre"));
-                alumn.setApellido1(rs.getString("apellido1"));
-                alumn.setApellido2(rs.getString("apellido2"));
-                alumn.setDni(rs.getString("dni"));
-                alumn.setFechanacimiento(rs.getDate("fechanacimiento"));
+                alumn.setNombre(rs.getString("Nombre"));
+                alumn.setApellido1(rs.getString("Apellido1"));
+                alumn.setApellido2(rs.getString("Apellido2"));
+                alumn.setDni(rs.getString("DNI"));
+                alumn.setFechanacimiento(rs.getDate("fNacimiento"));
                 alumn.setTelefono(rs.getString("telefono"));
                 alumn.setEmail(rs.getString("email"));
                 alumn.setDireccion(rs.getString("direccion"));
@@ -62,7 +85,7 @@ public class AlumnoDAO_IMP
             }
             
         }catch(Exception e){
-            System.out.println("ERROR: "+e.getMessage());
+            System.out.println("ERROR byid al: "+e.getMessage());
         }
         
         return alumn;
@@ -81,15 +104,15 @@ public class AlumnoDAO_IMP
             while(rs.next()){  //Creamos una instancia para pasar los datos por un id
                 alumn=new Alumno();
                 alumn.setId(rs.getInt("id"));
-                alumn.setNombre(rs.getString("nombre"));
-                alumn.setApellido1(rs.getString("apellido1"));
-                alumn.setApellido2(rs.getString("apellido2"));
-                alumn.setDni(rs.getString("dni"));
-                alumn.setFechanacimiento(rs.getDate("fechanacimiento"));
+                alumn.setNombre(rs.getString("Nombre"));
+                alumn.setApellido1(rs.getString("Apellido1"));
+                alumn.setApellido2(rs.getString("Apellido2"));
+                alumn.setDni(rs.getString("DNI"));
+                alumn.setFechanacimiento(rs.getDate("fNacimiento"));
                 alumn.setTelefono(rs.getString("telefono"));
                 alumn.setEmail(rs.getString("email"));
                 alumn.setDireccion(rs.getString("direccion"));
-                alumn.setCodpostal(rs.getString("codpostal"));
+                alumn.setCodpostal(rs.getString("cp"));
                 alumn.setProvincia(rs.getString("provincia"));
                 alumn.setPoblacion(rs.getString("poblacion"));
                 
@@ -97,7 +120,7 @@ public class AlumnoDAO_IMP
             }
             
         }catch(Exception e){
-            System.out.println("ERROR: "+e.getMessage());
+            System.out.println("ERROR byall al: "+e.getMessage());
         }
         
         return allalumn;
@@ -105,7 +128,44 @@ public class AlumnoDAO_IMP
 
     @Override
     public int update(Alumno a) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String sql="""
+                   update centroeducativo.cursoacademico
+                   set dni = ?,
+                   nombre = ?,
+                   apellido1 = ?,
+                   apellido2 = ?,
+                   fNacimiento = ?,
+                   telefono = ?,
+                   email = ?,
+                   direccion = ?,
+                   cp = ?,
+                   poblacion = ?,
+                   provincia = ?
+                   where id = ?;
+                   """;
+        
+        try(Connection cn=MyDataSource.getConnection();){
+                
+            PreparedStatement pstm=cn.prepareStatement(sql);
+            
+            pstm.setString(1, a.getDni());
+            pstm.setString(2, a.getNombre());
+            pstm.setString(3, a.getApellido1());
+            pstm.setString(4, a.getApellido2());
+            pstm.setDate(5, a.getFechanacimiento());
+            pstm.setString(6, a.getTelefono());
+            pstm.setString(7, a.getEmail());
+            pstm.setString(8, a.getDireccion());
+            pstm.setString(9, a.getCodpostal());
+            pstm.setString(10, a.getPoblacion());
+            pstm.setString(11, a.getProvincia());
+            
+            return pstm.executeUpdate();
+            
+        }catch(Exception e){
+            System.out.println("ERROR updt al: "+e.getMessage());
+        }
+        return 0;
     }
 
     @Override
@@ -120,7 +180,7 @@ public class AlumnoDAO_IMP
             
             pstm.executeUpdate();
         }catch(Exception e){
-            System.out.println("ERROR: "+e.getMessage());
+            System.out.println("ERROR delet al: "+e.getMessage());
         }
     }
     

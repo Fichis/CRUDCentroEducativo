@@ -46,12 +46,11 @@ public class CursoAcademicoDAO_IMP
             
             return pstm.executeUpdate();
         }catch(Exception e){
-            System.out.println("ERROR: "+e.getMessage());
+            System.out.println("ERROR add ca: "+e.getMessage());
         }
         return 0;
     }
     
-
     @Override
     public CursoAcademico getById(int id) throws SQLException {
         String sql="SELECT * FROM centroeducativo.cursoacademico WHERE id=?";
@@ -70,7 +69,7 @@ public class CursoAcademicoDAO_IMP
             }
             
         }catch(Exception e){
-            System.out.println("ERROR: "+e.getMessage());
+            System.out.println("ERROR byid ca: "+e.getMessage());
         }
         
         return cursoaca;
@@ -96,14 +95,12 @@ public class CursoAcademicoDAO_IMP
             }
             
         }catch(Exception e){
-            System.out.println("ERROR: "+e.getMessage());
+            System.out.println("ERROR byall ca: "+e.getMessage());
         }
         
         return allcursos;
     }
     
-    
-
     @Override
     public int update(CursoAcademico c) throws SQLException {
         
@@ -126,32 +123,7 @@ public class CursoAcademicoDAO_IMP
             return pstm.executeUpdate();
             
         }catch(Exception e){
-            System.out.println("ERROR: "+e.getMessage());
-        }
-        return 0;
-    }
-    
-    
-    public int update (CursoAcademico primero, CursoAcademico segundo){
-        String sql="""
-                   update centroeducativo.cursoacademico as a,
-                   	  (select id from centroeducativo.cursoacademico where yearinicio = ?) as b
-                   		set a.yearinicio=? ,
-                                    a.yearfin=? ,
-                                    a.descripcion=?
-                   		where a.id = b.id;
-                   """;
-        
-        try(Connection cn=MyDataSource.getConnection();){
-                
-            PreparedStatement pstm=cn.prepareStatement(sql);
-            pstm.setInt(1, primero.getYearinicio());
-            pstm.setInt(2, segundo.getYearinicio());
-            pstm.setInt(3, segundo.getYearfin());
-            pstm.setString(4, segundo.getDescripcion());
-            return pstm.executeUpdate();
-        }catch(Exception e){
-            System.out.println("ERROR: "+e.getMessage());
+            System.out.println("ERROR updt ca: "+e.getMessage());
         }
         return 0;
     }
@@ -168,7 +140,7 @@ public class CursoAcademicoDAO_IMP
             
             pstm.executeUpdate();
         }catch(Exception e){
-            System.out.println("ERROR: "+e.getMessage());
+            System.out.println("ERROR delt ca: "+e.getMessage());
         }
         
     }

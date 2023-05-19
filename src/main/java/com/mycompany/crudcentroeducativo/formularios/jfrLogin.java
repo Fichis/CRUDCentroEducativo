@@ -98,8 +98,8 @@ public class jfrLogin extends javax.swing.JFrame {
         try{
             if(user.valida(txtUsuario.getText(), pass)){
                 System.out.println("Usuario correcto");
-                jfrCursoAcademico fcurso = new jfrCursoAcademico();
-                fcurso.setVisible(true);
+                frmMain fmain = new frmMain();
+                fmain.setVisible(true);
                 this.dispose();
             }else{
                 JOptionPane.showMessageDialog(this, "Usuario incorrecto");
