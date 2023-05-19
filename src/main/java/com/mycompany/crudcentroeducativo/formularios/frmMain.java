@@ -157,10 +157,8 @@ public class frmMain extends javax.swing.JFrame {
 
     private void optAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_optAlumnoActionPerformed
         // TODO add your handling code here:
-        jfriAlumnos jfriAlumn= new jfriAlumnos();
-        
-        pnlEscritorio.add(jfriAlumn);
-        jfriAlumn.show();
+        jfrAlumnos jfral= new jfrAlumnos();
+        jfral.setVisible(true);
         
     }//GEN-LAST:event_optAlumnoActionPerformed
 
