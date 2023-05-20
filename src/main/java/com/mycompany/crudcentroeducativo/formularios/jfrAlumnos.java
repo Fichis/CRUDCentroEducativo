@@ -149,8 +149,8 @@ public class jfrAlumnos extends javax.swing.JFrame {
         );
 
         txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtBuscarKeyPressed(evt);
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtBuscarKeyTyped(evt);
             }
         });
 
@@ -220,24 +220,6 @@ public class jfrAlumnos extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtBuscarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyPressed
-        // TODO add your handling code here:
-        
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){ //Si presionamos enter...
-            DefaultTableModel modelo = (DefaultTableModel) jtAlumnos.getModel(); //Cogemos el modelo
-            TableRowSorter<TableModel> trSorter = new TableRowSorter<TableModel>(modelo); //Creamos un filtro
-            //podemos usar expresion regular, *,%,? ... (no funciona muy bien jajsj)
-            jtAlumnos.setRowSorter(trSorter); //añadimos el sorter a la tabla
-            
-            if(txtBuscar.getText().length()==0){ //Si no hay registros, null
-                trSorter.setRowFilter(null);
-            }else{ //Si hay registros, muestralos
-                trSorter.setRowFilter(RowFilter.regexFilter(txtBuscar.getText().trim()));
-            }
-        }
-        
-    }//GEN-LAST:event_txtBuscarKeyPressed
-
     private void jtAlumnosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtAlumnosMouseClicked
         // TODO add your handling code here:
         
@@ -280,6 +262,20 @@ public class jfrAlumnos extends javax.swing.JFrame {
             Logger.getLogger(jfrAlumnos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnBorrarActionPerformed
+
+    private void txtBuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyTyped
+        // TODO add your handling code here:
+        DefaultTableModel modelo = (DefaultTableModel) jtAlumnos.getModel(); //Cogemos el modelo
+            TableRowSorter<TableModel> trSorter = new TableRowSorter<TableModel>(modelo); //Creamos un filtro
+            //podemos usar expresion regular, *,%,? ... (no funciona muy bien jajsj)
+            jtAlumnos.setRowSorter(trSorter); //añadimos el sorter a la tabla
+            
+            if(txtBuscar.getText().length()==0){ //Si no hay registros, null
+                trSorter.setRowFilter(null);
+            }else{ //Si hay registros, muestralos
+                trSorter.setRowFilter(RowFilter.regexFilter(txtBuscar.getText().trim()));
+            }
+    }//GEN-LAST:event_txtBuscarKeyTyped
 
     /**
      * @param args the command line arguments
