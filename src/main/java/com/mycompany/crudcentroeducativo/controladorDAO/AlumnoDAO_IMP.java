@@ -79,7 +79,7 @@ public class AlumnoDAO_IMP
                 alumn.setTelefono(rs.getString("telefono"));
                 alumn.setEmail(rs.getString("email"));
                 alumn.setDireccion(rs.getString("direccion"));
-                alumn.setCodpostal(rs.getString("codpostal"));
+                alumn.setCodpostal(rs.getString("cp"));
                 alumn.setProvincia(rs.getString("provincia"));
                 alumn.setPoblacion(rs.getString("poblacion"));
             }
@@ -129,7 +129,7 @@ public class AlumnoDAO_IMP
     @Override
     public int update(Alumno a) throws SQLException {
         String sql="""
-                   update centroeducativo.cursoacademico
+                   update centroeducativo.alumno
                    set dni = ?,
                    nombre = ?,
                    apellido1 = ?,
@@ -159,6 +159,7 @@ public class AlumnoDAO_IMP
             pstm.setString(9, a.getCodpostal());
             pstm.setString(10, a.getPoblacion());
             pstm.setString(11, a.getProvincia());
+            pstm.setInt(12, a.getId());
             
             return pstm.executeUpdate();
             
