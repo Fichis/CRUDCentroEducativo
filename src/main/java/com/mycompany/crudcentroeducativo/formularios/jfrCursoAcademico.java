@@ -242,7 +242,7 @@ public class jfrCursoAcademico extends javax.swing.JFrame {
         
         try {
             cursoaca.add(getCampos());
-            JOptionPane.showMessageDialog(this, "Curso AGREGADO correctamente");
+            JOptionPane.showMessageDialog(this, "Curso Académico AGREGADO correctamente");
             muestraTable();
         } catch (SQLException ex) {
             Logger.getLogger(jfrCursoAcademico.class.getName()).log(Level.SEVERE, null, ex);
@@ -279,7 +279,7 @@ public class jfrCursoAcademico extends javax.swing.JFrame {
         c.setId(Integer.parseInt(id));
         try {
             cursoaca.update(c);
-            JOptionPane.showMessageDialog(this, "Curso EDITADO correctamente");
+            JOptionPane.showMessageDialog(this, "Curso academico EDITADO correctamente");
             muestraTable();
         } catch (SQLException ex) {
             Logger.getLogger(jfrCursoAcademico.class.getName()).log(Level.SEVERE, null, ex);
@@ -296,7 +296,7 @@ public class jfrCursoAcademico extends javax.swing.JFrame {
         c.setId(Integer.parseInt(id));
         try {
             cursoaca.delete(c.getId());
-            JOptionPane.showMessageDialog(this, "Curso ELIMINADO correctamente");
+            JOptionPane.showMessageDialog(this, "Curso academico ELIMINADO correctamente");
             muestraTable();
         } catch (SQLException ex) {
             Logger.getLogger(jfrCursoAcademico.class.getName()).log(Level.SEVERE, null, ex);

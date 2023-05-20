@@ -4,12 +4,16 @@
  */
 package com.mycompany.crudcentroeducativo.formularios;
 
+import com.mycompany.crudcentroeducativo.controladorDAO.CursoAcademicoDAO_IMP;
 import com.mycompany.crudcentroeducativo.controladorDAO.CursoDAO_IMP;
 import com.mycompany.crudcentroeducativo.entidades.Curso;
+import com.mycompany.crudcentroeducativo.entidades.CursoAcademico;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -25,9 +29,14 @@ public class jfrCurso extends javax.swing.JFrame {
      * Creates new form jfrCurso
      */
     public jfrCurso() {
-        initComponents();
-        configTable();
-        muestraTable();
+        try {
+            initComponents();
+            configTable();
+            configComboBox();
+            muestraTable();
+        } catch (SQLException ex) {
+            Logger.getLogger(jfrCurso.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     private void configTable(){
@@ -43,27 +52,67 @@ public class jfrCurso extends javax.swing.JFrame {
         jtCurso.setModel(modelo);
     }
     
-    private void muestraTable(){
+    private void configComboBox(){
+        try {
+            CursoAcademicoDAO_IMP caimplem = CursoAcademicoDAO_IMP.getInstance();
+            ArrayList<CursoAcademico> allcursoaca = caimplem.getAll();
+            for(CursoAcademico ca : allcursoaca){
+                cbCursoAcademico.addItem(ca.getDescripcion());
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(jfrCurso.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void muestraTable() throws SQLException{
         DefaultTableModel modelo = (DefaultTableModel)jtCurso.getModel();
         modelo.setNumRows(0);
         
-        CursoDAO_IMP alumn = CursoDAO_IMP.getInstance();
+        CursoAcademicoDAO_IMP cursoacaimple = CursoAcademicoDAO_IMP.getInstance();
+        ArrayList<CursoAcademico> allcursoaca = cursoacaimple.getAll();
+        CursoDAO_IMP cursoimple = CursoDAO_IMP.getInstance();
         String[] fila = new String[5];
         
-        try {
-            ArrayList<Curso> lista = alumn.getAll();
-            
-            for(Curso c : lista){
-                fila[0]=""+c.getId();
-                fila[1]=""+c.getCodigo();
-                fila[2]=""+c.getNombre();
-                fila[3]=""+c.getObservaciones();
-                fila[4]=""+c.getIdcursoacademico();
-                
-                modelo.addRow(fila);
+        if (cbCursoAcademico.getSelectedItem().toString() == null ||
+            cbCursoAcademico.getSelectedItem().toString().isBlank()) {
+            try {
+                ArrayList<Curso> lista = cursoimple.getAll();
+
+                for (Curso c : lista) {
+                    fila[0] = "" + c.getId();
+                    fila[1] = "" + c.getCodigo();
+                    fila[2] = "" + c.getNombre();
+                    fila[3] = "" + c.getObservaciones();
+                    fila[4] = "" + c.getIdcursoacademico();
+
+                    modelo.addRow(fila);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(jfrAlumnos.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }catch (SQLException ex) {
-            Logger.getLogger(jfrAlumnos.class.getName()).log(Level.SEVERE, null, ex);
+        } else {
+            try{
+                ArrayList<CursoAcademico> allcuraca = cursoacaimple.getAll();
+                int id = 0;
+                for(CursoAcademico curaca : allcuraca){
+                if(cbCursoAcademico.getSelectedItem().toString().equals(curaca.getDescripcion())){
+                        id = curaca.getId();
+                    }
+                }
+                ArrayList<Curso> lista = cursoimple.getAllByCursoAcademico(id);
+                for(Curso c : lista){
+                fila[0]= "" + c.getId();
+                fila[1] = "" + c.getCodigo();
+                fila[2] = "" + c.getNombre();
+                fila[3] = "" + c.getObservaciones();
+                fila[4] = "" + c.getIdcursoacademico();
+
+                modelo.addRow(fila);
+                }
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(jfrAlumnos.class.getName()).log(Level.SEVERE,null,ex);
+            }
         }
     }
     
@@ -83,6 +132,18 @@ public class jfrCurso extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jtCurso = new javax.swing.JTable();
         pnlTexto = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        txtCodigo = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        txtNombre = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtaObservaciones = new javax.swing.JTextArea();
+        cbCursoAcademico = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
+        btnAñadir = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
+        btnBorrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -113,6 +174,11 @@ public class jfrCurso extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jtCurso.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtCursoMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jtCurso);
 
         javax.swing.GroupLayout pnlTablaLayout = new javax.swing.GroupLayout(pnlTabla);
@@ -127,7 +193,7 @@ public class jfrCurso extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(pnlTablaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 469, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 542, Short.MAX_VALUE)
                 .addContainerGap())
         );
         pnlTablaLayout.setVerticalGroup(
@@ -142,15 +208,99 @@ public class jfrCurso extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jLabel2.setText("Codigo");
+
+        jLabel3.setText("Nombre");
+
+        jLabel4.setText("Observaciones");
+
+        txtaObservaciones.setColumns(20);
+        txtaObservaciones.setRows(5);
+        jScrollPane2.setViewportView(txtaObservaciones);
+
+        cbCursoAcademico.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
+        cbCursoAcademico.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbCursoAcademicoItemStateChanged(evt);
+            }
+        });
+
+        jLabel5.setText("IdCursoAcademico");
+
+        btnAñadir.setText("Añadir");
+        btnAñadir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAñadirActionPerformed(evt);
+            }
+        });
+
+        btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
+
+        btnBorrar.setText("Borrar");
+        btnBorrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBorrarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlTextoLayout = new javax.swing.GroupLayout(pnlTexto);
         pnlTexto.setLayout(pnlTextoLayout);
         pnlTextoLayout.setHorizontalGroup(
             pnlTextoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 385, Short.MAX_VALUE)
+            .addGroup(pnlTextoLayout.createSequentialGroup()
+                .addGap(64, 64, 64)
+                .addGroup(pnlTextoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addGroup(pnlTextoLayout.createSequentialGroup()
+                        .addComponent(btnAñadir)
+                        .addGap(57, 57, 57)
+                        .addComponent(btnEditar)
+                        .addGap(57, 57, 57)
+                        .addComponent(btnBorrar))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 456, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(pnlTextoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(pnlTextoLayout.createSequentialGroup()
+                            .addComponent(jLabel2)
+                            .addGap(110, 110, 110)
+                            .addComponent(jLabel5))
+                        .addGroup(pnlTextoLayout.createSequentialGroup()
+                            .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(101, 101, 101)
+                            .addComponent(cbCursoAcademico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 456, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(95, Short.MAX_VALUE))
         );
         pnlTextoLayout.setVerticalGroup(
             pnlTextoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(pnlTextoLayout.createSequentialGroup()
+                .addGap(39, 39, 39)
+                .addGroup(pnlTextoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlTextoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbCursoAcademico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel3)
+                .addGap(3, 3, 3)
+                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(45, 45, 45)
+                .addGroup(pnlTextoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAñadir)
+                    .addComponent(btnEditar)
+                    .addComponent(btnBorrar))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -160,8 +310,7 @@ public class jfrCurso extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(pnlTabla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlTexto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(pnlTexto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -199,6 +348,106 @@ public class jfrCurso extends javax.swing.JFrame {
             }
     }//GEN-LAST:event_txtBuscarKeyTyped
 
+    private void jtCursoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtCursoMouseClicked
+        try {
+            // TODO add your handling code here:
+            CursoAcademicoDAO_IMP caimple = CursoAcademicoDAO_IMP.getInstance();
+            CursoAcademico ca = caimple.getById(Integer.parseInt(jtCurso.getValueAt(jtCurso.getSelectedRow(), 4).toString()));
+            int rowindex = jtCurso.getSelectedRow();
+            txtCodigo.setText(jtCurso.getModel().getValueAt(rowindex, 1).toString());
+            txtNombre.setText(jtCurso.getModel().getValueAt(rowindex, 2).toString());
+            txtaObservaciones.setText(jtCurso.getModel().getValueAt(rowindex, 3).toString());
+            cbCursoAcademico.setSelectedItem(ca.getDescripcion());
+        } catch (SQLException ex) {
+            Logger.getLogger(jfrCurso.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception e){
+            System.out.println("ERROR click tbl Curso: "+e.getMessage());
+        }
+    }//GEN-LAST:event_jtCursoMouseClicked
+
+    private void btnAñadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAñadirActionPerformed
+        // TODO add your handling code here:
+        CursoDAO_IMP cursoimple = CursoDAO_IMP.getInstance();
+        
+        try {
+            cursoimple.add(getCampos());
+            muestraTable();
+            JOptionPane.showMessageDialog(this, "Curso AGREGADO correctamente");
+        } catch (SQLException ex) {
+            Logger.getLogger(jfrCursoAcademico.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnAñadirActionPerformed
+
+    private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
+        // TODO add your handling code here:
+        int rowindex = jtCurso.getSelectedRow();
+        String id = jtCurso.getModel().getValueAt(rowindex, 0).toString();
+        
+        CursoDAO_IMP curso = CursoDAO_IMP.getInstance();
+        Curso c = getCampos();
+        c.setId(Integer.parseInt(id));
+        try {
+            curso.delete(c.getId());
+            JOptionPane.showMessageDialog(this, "Curso ELIMINADO correctamente");
+            muestraTable();
+        } catch (SQLException ex) {
+            Logger.getLogger(jfrCursoAcademico.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception e){
+            System.out.println("ERROR del curso: "+e.getMessage());
+        }
+        
+    }//GEN-LAST:event_btnBorrarActionPerformed
+
+    private void cbCursoAcademicoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbCursoAcademicoItemStateChanged
+        try {
+            // TODO add your handling code here:
+            muestraTable();
+        } catch (SQLException ex) {
+            Logger.getLogger(jfrCurso.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_cbCursoAcademicoItemStateChanged
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        // TODO add your handling code here:
+        int rowindex = jtCurso.getSelectedRow();
+        String id = jtCurso.getModel().getValueAt(rowindex, 0).toString();
+        
+        CursoDAO_IMP cursoaca = CursoDAO_IMP.getInstance();
+        Curso c = getCampos();
+        c.setId(Integer.parseInt(id));
+        try {
+            cursoaca.update(c);
+            JOptionPane.showMessageDialog(this, "Curso EDITADO correctamente");
+            muestraTable();
+        } catch (SQLException ex) {
+            Logger.getLogger(jfrCursoAcademico.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private Curso getCampos(){
+        Curso c=new Curso();
+        try {
+            CursoAcademicoDAO_IMP caimple = CursoAcademicoDAO_IMP.getInstance();
+            ArrayList<CursoAcademico> allcursoaca = caimple.getAll();
+            int id = 0;
+            //Busco el id del curso mediante la descripcion
+            for(CursoAcademico curaca : allcursoaca){
+                if(cbCursoAcademico.getSelectedItem().toString().equals(curaca.getDescripcion())){
+                    id = curaca.getId();
+                }
+            }
+            //seteo los campos
+            c.setCodigo(txtCodigo.getText());
+            c.setNombre(txtNombre.getText());
+            c.setObservaciones(txtaObservaciones.getText());
+            c.setIdcursoacademico(id);
+        } catch (SQLException ex) {
+            Logger.getLogger(jfrCurso.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return c;
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -235,12 +484,24 @@ public class jfrCurso extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAñadir;
+    private javax.swing.JButton btnBorrar;
+    private javax.swing.JButton btnEditar;
+    private javax.swing.JComboBox<String> cbCursoAcademico;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jtCurso;
     private javax.swing.JPanel pnlTabla;
     private javax.swing.JPanel pnlTexto;
     private javax.swing.JTextField txtBuscar;
+    private javax.swing.JTextField txtCodigo;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextArea txtaObservaciones;
     // End of variables declaration//GEN-END:variables
 }

@@ -44,6 +44,7 @@ public class CursoDAO_IMP
             pstm.setString(2, c.getNombre());
             pstm.setString(3, c.getObservaciones());
             pstm.setInt(4, c.getIdcursoacademico());
+            return pstm.executeUpdate();
         }catch(Exception e){
             System.out.println("ERORR add curso: "+e.getMessage());
         }
@@ -174,6 +175,5 @@ public class CursoDAO_IMP
         
         return allcursobyCA;
     }
-    
     
 }
