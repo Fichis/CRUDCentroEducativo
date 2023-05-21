@@ -87,6 +87,11 @@ public class frmMain extends javax.swing.JFrame {
 
         optCurso.setMnemonic('y');
         optCurso.setText("Cursos");
+        optCurso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                optCursoActionPerformed(evt);
+            }
+        });
         editMenu.add(optCurso);
 
         optAlumno.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_DOWN_MASK));
@@ -161,6 +166,12 @@ public class frmMain extends javax.swing.JFrame {
         jfral.setVisible(true);
         
     }//GEN-LAST:event_optAlumnoActionPerformed
+
+    private void optCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_optCursoActionPerformed
+        // TODO add your handling code here:
+        jfrCurso jfrcur = new jfrCurso();
+        jfrcur.setVisible(true);
+    }//GEN-LAST:event_optCursoActionPerformed
 
     /**
      * @param args the command line arguments
