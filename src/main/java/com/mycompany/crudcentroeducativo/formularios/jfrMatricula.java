@@ -287,7 +287,7 @@ public class jfrMatricula extends javax.swing.JFrame {
         txtIdUnidad.setText(jtMatricula.getModel().getValueAt(rowindex, 2).toString());
         txtaDescripcion.setText(jtMatricula.getModel().getValueAt(rowindex, 3).toString());
         txtFMatricula.setText(jtMatricula.getModel().getValueAt(rowindex, 4).toString());
-        txtFBaja.setText(jtMatricula.getModel().getValueAt(rowindex, 5).toString());if(evt.getClickCount()==2){
+        txtFBaja.setText(jtMatricula.getModel().getValueAt(rowindex, 5).toString());if(evt.getClickCount()==2);
         
         /*if(evt.getClickCount()==2){
             //Cargamos el usuario detalle del alumno seleccionado (jpanel)
@@ -303,7 +303,7 @@ public class jfrMatricula extends javax.swing.JFrame {
         }*/
         
     }//GEN-LAST:event_jtMatriculaMouseClicked
-
+    
     /**
      * @param args the command line arguments
      */
@@ -333,6 +333,7 @@ public class jfrMatricula extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new jfrMatricula().setVisible(true);
             }
