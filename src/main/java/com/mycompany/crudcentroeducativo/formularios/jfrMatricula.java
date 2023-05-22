@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDialog;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -286,7 +287,21 @@ public class jfrMatricula extends javax.swing.JFrame {
         txtIdUnidad.setText(jtMatricula.getModel().getValueAt(rowindex, 2).toString());
         txtaDescripcion.setText(jtMatricula.getModel().getValueAt(rowindex, 3).toString());
         txtFMatricula.setText(jtMatricula.getModel().getValueAt(rowindex, 4).toString());
-        txtFBaja.setText(jtMatricula.getModel().getValueAt(rowindex, 5).toString());
+        txtFBaja.setText(jtMatricula.getModel().getValueAt(rowindex, 5).toString());if(evt.getClickCount()==2){
+        
+        /*if(evt.getClickCount()==2){
+            //Cargamos el usuario detalle del alumno seleccionado (jpanel)
+            JDialog frame = new JDialog(this,"Detalle Alumno", true); 
+            //true para que sea modal, que interactue el usuario
+            jpAlumnoDetalle panel = new jpAlumnoDetalle();
+            panel.CargaDetalle(Integer.parseInt(jtAlumnos.getValueAt(jtAlumnos.getSelectedRow(), 0).toString()));
+            frame.getContentPane().add(panel);
+            frame.pack();//Se ajusta al tamaño del layout
+            panel.configButtons(2);
+            frame.setVisible(true);
+            this.muestraTable();
+        }*/
+        
     }//GEN-LAST:event_jtMatriculaMouseClicked
 
     /**
