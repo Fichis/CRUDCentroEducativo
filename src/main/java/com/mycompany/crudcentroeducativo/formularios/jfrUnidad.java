@@ -4,7 +4,9 @@
  */
 package com.mycompany.crudcentroeducativo.formularios;
 
+import com.mycompany.crudcentroeducativo.controladorDAO.CursoDAO_IMP;
 import com.mycompany.crudcentroeducativo.controladorDAO.UnidadDAO_IMP;
+import com.mycompany.crudcentroeducativo.entidades.Curso;
 import com.mycompany.crudcentroeducativo.entidades.Unidad;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -38,18 +40,26 @@ public class jfrUnidad extends javax.swing.JFrame {
         DefaultTableModel modelo = (DefaultTableModel)jtUnidad.getModel();
         modelo.setNumRows(0);
         
-        UnidadDAO_IMP unidad = UnidadDAO_IMP.getInstance();
+        UnidadDAO_IMP uniImple = UnidadDAO_IMP.getInstance();
+        CursoDAO_IMP cuImple = CursoDAO_IMP.getInstance();
+        //AulaDAO_IMP auImple = AulaDAO_IMP.getInstance();
+        //AutorizadoDAO_IMP autorImple = AutorizadoDAO_IMP.getInstance();
         String[] fila = new String[7];
         
         try {
-            ArrayList<Unidad> lista = unidad.getAll();
+            ArrayList<Unidad> listaUni = uniImple.getAll();
+            ArrayList<Curso> listaCur = cuImple.getAll();
+            //ArrayList<Aula> lista = auImple.getAll();
+            //ArrayList<Autorizado> lista = autorImple.getAll();
             
-            for(Unidad u : lista){
+            for(Unidad u : listaUni){
+                Curso c = cuImple.getById(u.getIdcurso());
+                String nCurso = c.getNombre();
                 fila[0]=""+u.getId();
                 fila[1]=""+u.getCodigo();
                 fila[2]=""+u.getNombre();
                 fila[3]=""+u.getObservaciones();
-                fila[4]=""+u.getIdcurso();
+                fila[4]=""+nCurso;
                 fila[5]=""+u.getIdtutor();
                 fila[6]=""+u.getIdaula();
                 
