@@ -25,6 +25,7 @@ public class jfrUnidad extends javax.swing.JFrame {
         initComponents();
         configTable();
         muestraTable();
+        //ARREGLAR AÑADIR, EDITAR, BORRAR
     }
 
     private void configTable(){

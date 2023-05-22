@@ -4,6 +4,18 @@
  */
 package com.mycompany.crudcentroeducativo.formularios;
 
+import com.mycompany.crudcentroeducativo.controladorDAO.AlumnoDAO_IMP;
+import com.mycompany.crudcentroeducativo.controladorDAO.MatriculaDAO_IMP;
+import com.mycompany.crudcentroeducativo.controladorDAO.UnidadDAO_IMP;
+import com.mycompany.crudcentroeducativo.entidades.Alumno;
+import com.mycompany.crudcentroeducativo.entidades.Matricula;
+import com.mycompany.crudcentroeducativo.entidades.Unidad;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author pc
@@ -15,6 +27,53 @@ public class jfrMatricula extends javax.swing.JFrame {
      */
     public jfrMatricula() {
         initComponents();
+        configTable();
+        muestraTable();
+    }
+    
+    private void configTable(){
+        String cabecera[] = {"IDMATRICULA","IDALUMNO","IDUNIDAD","DESCRIPCION", "FMATRICULA", "FBAJA"};
+        DefaultTableModel modelo = new DefaultTableModel(cabecera, 0);
+        jtMatricula.setModel(modelo);
+    }
+    
+    private void muestraTable(){
+        DefaultTableModel modelo = (DefaultTableModel)jtMatricula.getModel();
+        modelo.setNumRows(0);
+        
+        MatriculaDAO_IMP matrImple = MatriculaDAO_IMP.getInstance();
+        AlumnoDAO_IMP alImple = AlumnoDAO_IMP.getInstance();
+        UnidadDAO_IMP uniImple = UnidadDAO_IMP.getInstance();
+        String[] fila = new String[6];
+        
+        try {
+            ArrayList<Matricula> listMatr = matrImple.getAll();
+            ArrayList<Alumno> listAlum = alImple.getAll();
+            ArrayList<Unidad> listUni = uniImple.getAll();
+            
+            //Busco el nombre del/la alumno/unidad para setearlo en la tabla, en lugar de mostrar el id.
+            if (txtFBaja.getText() != null) {
+                for (Matricula matr : listMatr) {
+                    Alumno al = alImple.getById(matr.getIdalumno());
+                    String nAlumno = al.getNombre();
+                    Unidad uni = uniImple.getById(matr.getIdunidad());
+                    String nUnidad = uni.getNombre();
+
+                    fila[0] = "" + matr.getIdmatricula();
+                    fila[1] = "" + nAlumno;
+                    fila[2] = "" + nUnidad;
+                    fila[3] = "" + matr.getDescripcion();
+                    fila[4] = "" + matr.getfMatricula();
+                    fila[5] = "" + matr.getfBaja();
+
+                    modelo.addRow(fila);
+
+                }
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(jfrCursoAcademico.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -38,7 +97,7 @@ public class jfrMatricula extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtaDescripcion = new javax.swing.JTextArea();
         txtIdAlumno = new javax.swing.JTextField();
         txtIdUnidad = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
@@ -62,6 +121,11 @@ public class jfrMatricula extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jtMatricula.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtMatriculaMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jtMatricula);
 
         cbAlumno.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -109,10 +173,10 @@ public class jfrMatricula extends javax.swing.JFrame {
 
         jLabel3.setText("Descripcion");
 
-        jTextArea1.setEditable(false);
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane2.setViewportView(jTextArea1);
+        txtaDescripcion.setEditable(false);
+        txtaDescripcion.setColumns(20);
+        txtaDescripcion.setRows(5);
+        jScrollPane2.setViewportView(txtaDescripcion);
 
         txtIdAlumno.setEditable(false);
 
@@ -215,6 +279,16 @@ public class jfrMatricula extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jtMatriculaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtMatriculaMouseClicked
+        // TODO add your handling code here:
+        int rowindex = jtMatricula.getSelectedRow();
+        txtIdAlumno.setText(jtMatricula.getModel().getValueAt(rowindex, 1).toString());
+        txtIdUnidad.setText(jtMatricula.getModel().getValueAt(rowindex, 2).toString());
+        txtaDescripcion.setText(jtMatricula.getModel().getValueAt(rowindex, 3).toString());
+        txtFMatricula.setText(jtMatricula.getModel().getValueAt(rowindex, 4).toString());
+        txtFBaja.setText(jtMatricula.getModel().getValueAt(rowindex, 5).toString());
+    }//GEN-LAST:event_jtMatriculaMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -267,11 +341,11 @@ public class jfrMatricula extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTable jtMatricula;
     private javax.swing.JTextField txtFBaja;
     private javax.swing.JTextField txtFMatricula;
     private javax.swing.JTextField txtIdAlumno;
     private javax.swing.JTextField txtIdUnidad;
+    private javax.swing.JTextArea txtaDescripcion;
     // End of variables declaration//GEN-END:variables
 }

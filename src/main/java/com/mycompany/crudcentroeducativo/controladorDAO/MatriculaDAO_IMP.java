@@ -89,11 +89,14 @@ public class MatriculaDAO_IMP
             ResultSet rs = pstm.executeQuery();
             while (rs.next()) {  //Creamos una instancia para pasar los datos por un id
                 matr = new Matricula();
+                matr.setIdmatricula(rs.getInt("idmatricula"));
                 matr.setIdalumno(rs.getInt("idalumno"));
                 matr.setIdunidad(rs.getInt("idunidad"));
                 matr.setDescripcion(rs.getString("descripcion"));
                 matr.setfMatricula(rs.getDate("fMatricula"));
                 matr.setfBaja(rs.getDate("fBaja"));
+                
+                allmatriculas.add(matr);
             }
 
         } catch (Exception e) {
