@@ -65,7 +65,6 @@ public class jfrUnidad extends javax.swing.JFrame {
                 
                 modelo.addRow(fila);
             }
-            
         } catch (SQLException ex) {
             Logger.getLogger(jfrCursoAcademico.class.getName()).log(Level.SEVERE, null, ex);
         }
