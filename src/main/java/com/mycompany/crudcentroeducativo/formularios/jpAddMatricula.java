@@ -4,6 +4,18 @@
  */
 package com.mycompany.crudcentroeducativo.formularios;
 
+import com.mycompany.crudcentroeducativo.controladorDAO.AlumnoDAO_IMP;
+import com.mycompany.crudcentroeducativo.controladorDAO.CursoDAO_IMP;
+import com.mycompany.crudcentroeducativo.controladorDAO.MatriculaDAO_IMP;
+import com.mycompany.crudcentroeducativo.entidades.Alumno;
+import com.mycompany.crudcentroeducativo.entidades.Curso;
+import com.mycompany.crudcentroeducativo.entidades.Matricula;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+
 /**
  *
  * @author pc
@@ -15,8 +27,31 @@ public class jpAddMatricula extends javax.swing.JPanel {
      */
     public jpAddMatricula() {
         initComponents();
+        configAlumnos();
     }
 
+    public void configAlumnos(){
+        try {
+            AlumnoDAO_IMP alumimple = AlumnoDAO_IMP.getInstance();
+            ArrayList<Alumno> allalumnos = alumimple.getAll();
+            jfrMatricula matriculas = new jfrMatricula();
+            DefaultListModel<String> listaBox = new DefaultListModel<>();
+            jlAlumnos.setModel(listaBox);
+            for(Alumno alum : allalumnos){
+                int index = 1;
+                if(!(alum.getNombre().equals(matriculas.getTable().getValueAt(index, WIDTH))))
+                String fila = alum.getNombre()+" "+alum.getApellido1();
+                listaBox.addElement(fila);
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(jpAddMatricula.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -41,6 +76,7 @@ public class jpAddMatricula extends javax.swing.JPanel {
         btnAlum1 = new javax.swing.JButton();
         btnAlumAll = new javax.swing.JButton();
         btnAceptar = new javax.swing.JButton();
+        cbCursos = new javax.swing.JComboBox<>();
 
         jScrollPane2.setViewportView(jEditorPane1);
 
@@ -97,15 +133,18 @@ public class jpAddMatricula extends javax.swing.JPanel {
         btnAceptar.setText("Aceptar");
         jPanel1.add(btnAceptar, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 330, -1, -1));
 
+        cbCursos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel1.add(cbCursos, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 50, -1, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 548, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -116,6 +155,7 @@ public class jpAddMatricula extends javax.swing.JPanel {
     private javax.swing.JButton btnAlumAll;
     private javax.swing.JButton btnMatri1;
     private javax.swing.JButton btnMatriAll;
+    private javax.swing.JComboBox<String> cbCursos;
     private javax.swing.JEditorPane jEditorPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

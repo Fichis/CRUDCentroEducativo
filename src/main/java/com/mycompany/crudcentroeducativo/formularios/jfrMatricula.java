@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -30,6 +31,10 @@ public class jfrMatricula extends javax.swing.JFrame {
         initComponents();
         configTable();
         muestraTable();
+    }
+    
+    public JTable getTable(){
+        return jtMatricula;
     }
     
     private void configTable(){
@@ -192,6 +197,11 @@ public class jfrMatricula extends javax.swing.JFrame {
         txtFBaja.setEditable(false);
 
         btnMatricular.setText("Matricular");
+        btnMatricular.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMatricularActionPerformed(evt);
+            }
+        });
 
         btnEditar.setText("Editar");
 
@@ -303,6 +313,17 @@ public class jfrMatricula extends javax.swing.JFrame {
         }*/
         
     }//GEN-LAST:event_jtMatriculaMouseClicked
+
+    private void btnMatricularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMatricularActionPerformed
+        // TODO add your handling code here:
+        JDialog frame = new JDialog(this, "Matricular", true);
+        //true para que sea modal, que interactue el usuario
+        jpAddMatricula panel = new jpAddMatricula();
+        frame.getContentPane().add(panel);
+        frame.pack();//Se ajusta al tamaño del layout
+        frame.setVisible(true);
+        this.muestraTable();
+    }//GEN-LAST:event_btnMatricularActionPerformed
     
     /**
      * @param args the command line arguments
