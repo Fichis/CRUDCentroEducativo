@@ -28,6 +28,7 @@ public class jpAddMatricula extends javax.swing.JPanel {
     public jpAddMatricula() {
         initComponents();
         configAlumnos();
+        configCursos();
     }
 
     public void configAlumnos(){
@@ -35,12 +36,13 @@ public class jpAddMatricula extends javax.swing.JPanel {
             AlumnoDAO_IMP alumimple = AlumnoDAO_IMP.getInstance();
             ArrayList<Alumno> allalumnos = alumimple.getAll();
             jfrMatricula matriculas = new jfrMatricula();
+            String fila= null;
             DefaultListModel<String> listaBox = new DefaultListModel<>();
             jlAlumnos.setModel(listaBox);
             for(Alumno alum : allalumnos){
                 int index = 1;
                 if(!(alum.getNombre().equals(matriculas.getTable().getValueAt(index, WIDTH))))
-                String fila = alum.getNombre()+" "+alum.getApellido1();
+                 fila = alum.getNombre()+" "+alum.getApellido1();
                 listaBox.addElement(fila);
             }
             
@@ -48,6 +50,18 @@ public class jpAddMatricula extends javax.swing.JPanel {
             Logger.getLogger(jpAddMatricula.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+    }
+    
+    public void configCursos(){
+        try {
+            CursoDAO_IMP curimple = CursoDAO_IMP.getInstance();
+            ArrayList<Curso> allcursos = curimple.getAll();
+            for(Curso c : allcursos){
+                cbCursos.addItem(c.getNombre());
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(jpAddMatricula.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     
@@ -94,11 +108,6 @@ public class jpAddMatricula extends javax.swing.JPanel {
 
         jlAlumnos.setBackground(new java.awt.Color(255, 255, 255));
         jlAlumnos.setForeground(new java.awt.Color(0, 0, 0));
-        jlAlumnos.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane1.setViewportView(jlAlumnos);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(66, 135, 130, 177));
@@ -109,11 +118,6 @@ public class jpAddMatricula extends javax.swing.JPanel {
 
         jlMatriculados.setBackground(new java.awt.Color(255, 255, 255));
         jlMatriculados.setForeground(new java.awt.Color(0, 0, 0));
-        jlMatriculados.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane3.setViewportView(jlMatriculados);
 
         jPanel1.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(337, 135, 136, 177));
@@ -131,9 +135,13 @@ public class jpAddMatricula extends javax.swing.JPanel {
         jPanel1.add(btnAlumAll, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 270, 50, 30));
 
         btnAceptar.setText("Aceptar");
+        btnAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAceptarActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnAceptar, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 330, -1, -1));
 
-        cbCursos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jPanel1.add(cbCursos, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 50, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -147,6 +155,10 @@ public class jpAddMatricula extends javax.swing.JPanel {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAceptarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

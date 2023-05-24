@@ -40,6 +40,8 @@ public class frmMain extends javax.swing.JFrame {
         optCursoAcademico = new javax.swing.JMenuItem();
         optCurso = new javax.swing.JMenuItem();
         optAlumno = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         contentMenuItem = new javax.swing.JMenuItem();
         optAcerca = new javax.swing.JMenuItem();
@@ -103,6 +105,17 @@ public class frmMain extends javax.swing.JFrame {
             }
         });
         editMenu.add(optAlumno);
+
+        jMenuItem1.setText("Unidad");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        editMenu.add(jMenuItem1);
+
+        jMenuItem2.setText("Matricula");
+        editMenu.add(jMenuItem2);
 
         menuBar.add(editMenu);
 
@@ -173,6 +186,10 @@ public class frmMain extends javax.swing.JFrame {
         jfrcur.setVisible(true);
     }//GEN-LAST:event_optCursoActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -214,6 +231,8 @@ public class frmMain extends javax.swing.JFrame {
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JMenuItem optAcerca;
