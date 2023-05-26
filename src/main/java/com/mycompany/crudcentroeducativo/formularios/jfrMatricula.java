@@ -5,9 +5,12 @@
 package com.mycompany.crudcentroeducativo.formularios;
 
 import com.mycompany.crudcentroeducativo.controladorDAO.AlumnoDAO_IMP;
+import com.mycompany.crudcentroeducativo.controladorDAO.CursoAcademicoDAO_IMP;
 import com.mycompany.crudcentroeducativo.controladorDAO.MatriculaDAO_IMP;
 import com.mycompany.crudcentroeducativo.controladorDAO.UnidadDAO_IMP;
 import com.mycompany.crudcentroeducativo.entidades.Alumno;
+import com.mycompany.crudcentroeducativo.entidades.Curso;
+import com.mycompany.crudcentroeducativo.entidades.CursoAcademico;
 import com.mycompany.crudcentroeducativo.entidades.Matricula;
 import com.mycompany.crudcentroeducativo.entidades.Unidad;
 import java.sql.SQLException;
@@ -15,6 +18,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -114,7 +118,7 @@ public class jfrMatricula extends javax.swing.JFrame {
         btnEditar = new javax.swing.JButton();
         btnBorrar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jtMatricula.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -206,6 +210,11 @@ public class jfrMatricula extends javax.swing.JFrame {
         btnEditar.setText("Editar");
 
         btnBorrar.setText("Dar de Baja");
+        btnBorrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBorrarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -324,6 +333,32 @@ public class jfrMatricula extends javax.swing.JFrame {
         frame.setVisible(true);
         this.muestraTable();
     }//GEN-LAST:event_btnMatricularActionPerformed
+
+    private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
+        // TODO add your handling code here:
+        /*int rowindex = jtCursos.getSelectedRow();
+        String id = jtCursos.getModel().getValueAt(rowindex, 0).toString();
+        
+        CursoAcademicoDAO_IMP cursoaca = CursoAcademicoDAO_IMP.getInstance();
+        CursoAcademico c = getCampos();
+        c.setId(Integer.parseInt(id));
+        try {
+            cursoaca.delete(c.getId());
+            JOptionPane.showMessageDialog(this, "Curso academico ELIMINADO correctamente");
+            muestraTable();
+        } catch (SQLException ex) {
+            Logger.getLogger(jfrCursoAcademico.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
+        
+    }//GEN-LAST:event_btnBorrarActionPerformed
+    
+    /*private Matricula getCampos(){
+        Matricula matri=new Matricula();
+        matri.setIdmatricula(Integer.parseInt(jtMatricula.getValueAt(1, 0).toString());
+        c.setYearfin(Integer.parseInt(txtFin.getText()));
+        c.setDescripcion(txtDescripcion.getText());
+        return c; 
+    }*/
     
     /**
      * @param args the command line arguments

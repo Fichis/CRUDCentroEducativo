@@ -14,8 +14,8 @@ import java.sql.DriverManager;
 public class MyDataSource {
     private static final String driver="com.mysql.cj.jdbc.Driver";
     private static final String url="jdbc:mysql://localhost:3306/centroeducativo";
-    private static final String user="adolfo";
-    private static final String pass="1234";
+    private static final String user="usercentroeducativo";
+    private static final String pass="Adolfo22";
     private static Connection cn;
     
     static{

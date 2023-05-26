@@ -12,6 +12,7 @@ import com.mycompany.crudcentroeducativo.entidades.Alumno;
 import com.mycompany.crudcentroeducativo.entidades.Curso;
 import com.mycompany.crudcentroeducativo.entidades.Matricula;
 import com.mycompany.crudcentroeducativo.entidades.Unidad;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -42,9 +43,9 @@ public class jpAddMatricula extends javax.swing.JPanel {
             DefaultListModel<String> listaBox = new DefaultListModel<>();
             jlAlumnos.setModel(listaBox);
             for(Alumno alum : allalumnos){
-                int index = 1;
+                int index = 0;
                 if(!(alum.getNombre().equals(matriculas.getTable().getValueAt(index, WIDTH))))
-                 fila = alum.getNombre()+" "+alum.getApellido1();
+                 fila = alum.getNombre();
                 listaBox.addElement(fila);
             }
             
@@ -95,8 +96,10 @@ public class jpAddMatricula extends javax.swing.JPanel {
         cbUnidad = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtaDescripcion = new javax.swing.JTextArea();
         jLabel5 = new javax.swing.JLabel();
+        txtFechaMatr = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
 
         jScrollPane2.setViewportView(jEditorPane1);
 
@@ -104,31 +107,29 @@ public class jpAddMatricula extends javax.swing.JPanel {
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Bradley Hand ITC", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Añadir Matrícula:");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 38, -1, -1));
 
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Lista de alumnos:");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 80, -1, -1));
 
-        jlAlumnos.setBackground(new java.awt.Color(255, 255, 255));
-        jlAlumnos.setForeground(new java.awt.Color(0, 0, 0));
         jScrollPane1.setViewportView(jlAlumnos);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 100, 130, 177));
 
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Alumnos a Matricular:");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 80, -1, -1));
 
-        jlMatriculados.setBackground(new java.awt.Color(255, 255, 255));
-        jlMatriculados.setForeground(new java.awt.Color(0, 0, 0));
         jScrollPane3.setViewportView(jlMatriculados);
 
         jPanel1.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 100, 136, 177));
 
         btnMatri1.setText(">");
+        btnMatri1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMatri1ActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnMatri1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 100, 40, 30));
 
         btnMatriAll.setText(">>");
@@ -146,25 +147,27 @@ public class jpAddMatricula extends javax.swing.JPanel {
                 btnAceptarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAceptar, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 310, -1, -1));
+        jPanel1.add(btnAceptar, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 350, -1, -1));
 
         jPanel1.add(cbUnidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 50, -1, -1));
 
-        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("Descripcion:");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, -1, -1));
 
-        jTextArea1.setBackground(new java.awt.Color(255, 255, 255));
-        jTextArea1.setColumns(20);
-        jTextArea1.setForeground(new java.awt.Color(0, 0, 0));
-        jTextArea1.setRows(5);
-        jScrollPane4.setViewportView(jTextArea1);
+        txtaDescripcion.setColumns(20);
+        txtaDescripcion.setRows(5);
+        jScrollPane4.setViewportView(txtaDescripcion);
 
         jPanel1.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 306, 240, 90));
 
-        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
         jLabel5.setText("Unidad:");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 30, -1, -1));
+
+        txtFechaMatr.setText("2023-05-26");
+        jPanel1.add(txtFechaMatr, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 320, 70, -1));
+
+        jLabel6.setText("Fecha Matricula:");
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 300, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -185,31 +188,53 @@ public class jpAddMatricula extends javax.swing.JPanel {
             Matricula matr = new Matricula();
             AlumnoDAO_IMP alimple = AlumnoDAO_IMP.getInstance();
             ArrayList<Alumno> allalum = alimple.getAll();
+            Alumno al = new Alumno();
             UnidadDAO_IMP unimple = UnidadDAO_IMP.getInstance();
             ArrayList<Unidad> alluni = unimple.getAll();
-            int idalum = -1;
-            int iduni = -1;
-            for(Alumno al : allalum){
-                if(jlAlumnos.getSelectedValue().equals(al.getNombre())){
-                    idalum = al.getId();
-                }
-            }
+            int iduni = 0;
+            ArrayList idalum = new ArrayList();
+            
             for (Unidad u : alluni){
                 if(cbUnidad.getSelectedItem().toString().equals(u.getNombre())){
                     iduni = u.getId();
                 }
             }
+            for (int i = 0; i < jlMatriculados.getModel().getSize(); i++) {
+                
+                al.setNombre(jlMatriculados.getModel().getElementAt(i));  
+            }
             
+            for(Alumno alum : allalum){
+                    if (al.getNombre().equals(alum.getNombre())){
+                        System.out.println(alum.getId());
+                        idalum.add(alum.getId()+"");
+                        
+                    }
+                }
             
-            matr.setIdalumno(idalum);
-            matr.setIdunidad(iduni);
-            matr.setDescripcion(null);
+            for(int i = 0; i<jlMatriculados.getModel().getSize(); i++){
+                jlMatriculados.getModel().getElementAt(i);
+                matr.setIdalumno(Integer.parseInt(idalum.get(i).toString()));
+                matr.setIdunidad(iduni);
+                matr.setDescripcion(txtaDescripcion.getText());
+                matr.setfMatricula(Date.valueOf(txtFechaMatr.getText()));
+                
+                matrimple.add(matr);
+            }
+            
             
         } catch (SQLException ex) {
             Logger.getLogger(jpAddMatricula.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }//GEN-LAST:event_btnAceptarActionPerformed
+
+    private void btnMatri1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMatri1ActionPerformed
+        // TODO add your handling code here:
+        DefaultListModel<String> listaBox = new DefaultListModel<>();
+        jlMatriculados.setModel(listaBox);
+        listaBox.addElement(jlAlumnos.getSelectedValue());
+    }//GEN-LAST:event_btnMatri1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -225,13 +250,15 @@ public class jpAddMatricula extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JList<String> jlAlumnos;
     private javax.swing.JList<String> jlMatriculados;
+    private javax.swing.JTextField txtFechaMatr;
+    private javax.swing.JTextArea txtaDescripcion;
     // End of variables declaration//GEN-END:variables
 }
